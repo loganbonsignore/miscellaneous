@@ -10,6 +10,7 @@ Answer the following questions to recieve a randomly generated strong password.
 """)
 website = input("What website is this password for? :")
 username = input("What is the username associated with this password? :")
+user_input = input("Enter one word for the program to use in making your password. :")
 
 # create a list of elements based on user input
 input_elements = [letter for letter in user_input]
