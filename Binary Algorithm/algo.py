@@ -1,98 +1,77 @@
 import random
 import numpy as np
+from sys import exit
 
-random_array = random.choices(np.arange(0,100),k=50)
+def check_for_match(sorted_array, user_number):
+    if len(sorted_array) == 1 or len(sorted_array) == 2:
+        found = []
+        for number in sorted_array:
+            if number == user_number:
+                print(f"We found your number {number}.")
+                found.append(number)
+                exit("Successful Exit^")
+        if not found:
+            print("We did not find your number.")
+            exit("Successful Exit^^")
+    elif len(sorted_array) == 0:
+        print("We did not find your number.")
+        exit("Successful Exit^^^")
+        
+def middle_index(sorted_array):
+    index = len(sorted_array)//2
+    return index
+
+# Get user input for random array
+start = int(input("Enter a start value for the random array :"))
+stop = int(input("Enter an end value for the random array :"))
+
+# Print array of numbers
+k = (stop - start) // 2
+random_array = random.choices(np.arange(start,stop),k=k)
 print(random_array)
 
-# get user input
-user_input = int(input("Enter a number between 1-100 for the algorithim to find :"))
+# Get user input
+user_number = int(input("Enter a number for the computer to find :"))
+# Safety net 'check for match' in case number of possible search results are limited
+check_for_match(random_array, user_number)
 
-# slice random_array array into two containers
-middle_value = int(len(random_array)//2)
-first_half = random_array[:middle_value]
-second_half = random_array[middle_value:]
+# Sort random array
+sorted_array = np.sort(random_array)
 
-# confirm or deny user_input matches any element in the either container
-if user_input in first_half:
-    # split first_half container into two smaller containers
-    middle_value = len(first_half)//2
-    second_half = first_half[middle_value:]
-    first_half = first_half[:middle_value]
-    print(first_half)
-    print(second_half)
-elif user_input in second_half:
-    # split second_half container into two smaller containers
-    middle_value = len(second_half)//2
-    first_half = second_half[:middle_value]
-    second_half = second_half[middle_value:]
-    print(first_half)
-    print(second_half)
+# While length of sorted_array is an even number, check for middle number match. If no match, remove middle number from array. 
+while len(sorted_array)%2 == 0:
+    if user_number == sorted_array[middle_index(sorted_array)]:
+        print(f"We found your number {sorted_array[middle_index(sorted_array)]}.") 
+        exit("Successful Exit*")
+    elif user_number != sorted_array[middle_index(sorted_array)]:
+        sorted_array = sorted_array[sorted_array != sorted_array[middle_index(sorted_array)]]    
+# Iterate through sorted array until finding user's element or eliminating all possible options
+while user_number != sorted_array[middle_index(sorted_array)]:
+    print(f'Top of Algo Sorted Array: {sorted_array}') # for display purposes only
+    # Create two halfs of the array
+    half_1 = [sorted_array[x] for x in range(middle_index(sorted_array))]
+    half_2 = [x for x in sorted_array if x not in half_1 and x != sorted_array[middle_index(sorted_array)]]
+    # Compare user's number to the middle number of the array to decide which half of the array the user's number is more likley to be in
+    if user_number > sorted_array[middle_index(sorted_array)]:
+        new_half = half_2
+    elif user_number < sorted_array[middle_index(sorted_array)]:
+        new_half = half_1
+    print(f'New Half: {new_half}') # for display purposes only
+    # Sort newly chosen half to ensure accuracy
+    sorted_array = np.sort(new_half)
+    # If only a few elements in array, loop through the remaining elements to find a match or eliminate the possibility of a match.
+    check_for_match(sorted_array, user_number)
+    # While length of new array is an even number, check for middle number match. If no match, remove middle number from array. 
+    while len(sorted_array)%2 == 0:
+        if user_number == sorted_array[middle_index(sorted_array)]:
+            print(f"We found your number {sorted_array[middle_index(sorted_array)]}.") 
+            exit("Successful Exit**")
+        else:
+            sorted_array = sorted_array[sorted_array != sorted_array[middle_index(sorted_array)]]
+            print(f'Even Converted Odd: {sorted_array}') # for display purposes only
+    # If only a few elements in array, loop through the remaining elements to find a match or eliminate the possibility of a match.
+    check_for_match(sorted_array, user_number)
+    print("/NEW LOOP/") # for display purposes only
 else:
-    print("Your number is not in this list")
-    exit()
-
-# evaluate for match in new first_half container 
-if user_input in first_half:
-    # split new first_half container into two smaller containers
-    middle_value = len(first_half)//2
-    second_half = first_half[middle_value:]
-    first_half = first_half[:middle_value]
-    print(first_half)
-    print(second_half)
-# evaluate for match in new second_half container 
-elif user_input in second_half:
-    # split new second_half container into two smaller containers
-    middle_value = len(second_half)//2
-    first_half = second_half[:middle_value]
-    second_half = second_half[middle_value:]
-    print(first_half)
-    print(second_half)
-
-# evaluate for match in new first_half container 
-if user_input in first_half:
-    # split new first_half container into two smaller containers
-    middle_value = len(first_half)//2
-    second_half = first_half[middle_value:]
-    first_half = first_half[:middle_value]
-    print(first_half)
-    print(second_half)
-# evaluate for match in new second_half container 
-elif user_input in second_half:
-    # split new second_half container into two smaller containers
-    middle_value = len(second_half)//2
-    first_half = second_half[:middle_value]
-    second_half = second_half[middle_value:]
-    print(first_half)
-    print(second_half)  
-
-# check to see if number in first or second half of list
-if user_input in first_half:
-    # split new first_half container into two smaller containers
-    middle_value = len(first_half)//2
-    second_half = first_half[middle_value:]
-    first_half = first_half[:middle_value]
-    print(first_half)
-    print(second_half)
-# evaluate for match in new second_half container 
-elif user_input in second_half:
-    # split new second_half container into two smaller containers
-    middle_value = len(second_half)//2
-    first_half = second_half[:middle_value]
-    second_half = second_half[middle_value:]
-    print(first_half)
-    print(second_half)
-
-# check final numbers in first half
-if (len(first_half)==1) and (first_half[0]==user_input):
-        print(f"Your number, {first_half[0]}, is in this list.")
-elif (len(first_half)==2) and (first_half[0]==user_input):
-        print(f"Your number, {first_half[0]}, is in this list.")
-elif (len(first_half)==2) and (first_half[1]==user_input):
-        print(f"Your number, {first_half[1]}, is in this list.")
-# check final numbers in second half       
-elif (len(second_half)==1) and (second_half[0]==user_input):
-    print(f"Your number, {second_half[0]}, is in this list.")
-elif (len(second_half)==2) and (second_half[0]==user_input):
-    print(f"Your number, {second_half[0]}, is in this list.")
-elif (len(second_half)==2) and (second_half[1]==user_input):
-    print(f"Your number, {second_half[1]}, is in this list.")
+    print(f"We found your number {sorted_array[middle_index(sorted_array)]}.")
+    exit("Successful Exit***")
