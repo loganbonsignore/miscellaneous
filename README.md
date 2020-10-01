@@ -1,2 +1,2 @@
-# Misc Projects
+## Miscellaneous Projects
 
